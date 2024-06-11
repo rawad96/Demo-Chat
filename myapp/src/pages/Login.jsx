@@ -27,10 +27,9 @@ const Login = () => {
         headers: { xaccesstoken: resp.data.accessToken },
       });
       console.log(respone);
-      if (respone) {
-        sessionStorage["userId"] = respone.data.id;
-        navigate("/main");
-      }
+
+      sessionStorage["userId"] = respone.data.id;
+      navigate("/main");
     } catch (error) {
       console.log(error);
     }
