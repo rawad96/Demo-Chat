@@ -72,7 +72,12 @@ const Login = () => {
               </Row>
               <Card.Text className="text-center">
                 Dont have an account?&nbsp;
-                <Card.Link className="link">Signup</Card.Link>
+                <Card.Link
+                  className="link"
+                  onClick={() => navigate("/createacc")}
+                >
+                  Signup
+                </Card.Link>
               </Card.Text>
             </Form>
           </Container>
