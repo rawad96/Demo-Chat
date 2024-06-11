@@ -44,7 +44,7 @@ const Login = () => {
         <Card className="signuplogin-subcard px-3 py-5">
           <Card.Text className="h3 text-center">Login</Card.Text>
           <Container>
-            <Form onSubmit={Loginn} onKeyDown={handleKeyPress}>
+            <Form onKeyDown={handleKeyPress}>
               <Row className="mt-4">
                 <input
                   type="text"
@@ -68,7 +68,7 @@ const Login = () => {
                 <Link className="link">Forgot password</Link>
               </Row>
               <Row className="mt-4 mb-4">
-                <Button>Login</Button>
+                <Button onClick={Loginn}>Login</Button>
               </Row>
               <Card.Text className="text-center">
                 Dont have an account?&nbsp;
