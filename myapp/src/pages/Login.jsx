@@ -25,7 +25,7 @@ const Login = () => {
     const respone = await axios.get(accessurl, {
       headers: { xaccesstoken: resp.data.accessToken },
     });
-
+    console.log(respone);
     if (respone) {
       sessionStorage["userId"] = respone.data.id;
       navigate("/main");
