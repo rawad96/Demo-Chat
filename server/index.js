@@ -9,6 +9,7 @@ const gropRouter = require("./routers/groupsRouter");
 const access = require("./routers/accessRouter");
 const usersBLL = require("./BLL/usersBLL");
 const groupsBLL = require("./BLL/groupsBll");
+const path = require("path");
 
 const port = 3000;
 
@@ -118,6 +119,8 @@ app.use(
   })
 );
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "../myapp/dist")));
 
 //Routers
 app.use("/users", usersRouter);
