@@ -1,0 +1,30 @@
+.signuplogin-card {
+  background-color: rgb(25, 128, 196);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border: unset;
+}
+
+.signuplogin-card .signuplogin-subcard {
+  width: 360px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5%;
+  border: unset;
+}
+
+.signuplogin-card input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid rgb(210, 207, 207);
+}
+
+.signuplogin-card .link {
+  text-decoration: none;
+  cursor: pointer;
+}
