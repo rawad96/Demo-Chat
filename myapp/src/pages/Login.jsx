@@ -19,16 +19,20 @@ const Login = () => {
   const navigate = useNavigate();
 
   const Loginn = async () => {
-    const loginData = { username: username, password: password };
-    const resp = await axios.post(auth, loginData);
+    try {
+      const loginData = { username: username, password: password };
+      const resp = await axios.post(auth, loginData);
 
-    const respone = await axios.get(accessurl, {
-      headers: { xaccesstoken: resp.data.accessToken },
-    });
-    console.log(respone);
-    if (respone) {
-      sessionStorage["userId"] = respone.data.id;
-      navigate("/main");
+      const respone = await axios.get(accessurl, {
+        headers: { xaccesstoken: resp.data.accessToken },
+      });
+      console.log(respone);
+      if (respone) {
+        sessionStorage["userId"] = respone.data.id;
+        navigate("/main");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
