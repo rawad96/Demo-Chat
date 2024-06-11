@@ -115,7 +115,7 @@ wsServer.on("connection", (ws) => {
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://jobs4u-eef5.onrender.com"],
+    origin: ["http://localhost:5173", "https://demo-chat-x7hx.onrender.com"],
   })
 );
 app.use(express.json());
