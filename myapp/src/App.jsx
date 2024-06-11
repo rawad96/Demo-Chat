@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import Create from "./pages/Create";
 import Main from "./pages/Main";
 import ChatAFriend from "./pages/ChatAFriend";
-import Last from "./pages/last";
+import Last from "./pages/Last";
 import GroupChat from "./pages/GroupChat";
 
 function App() {
