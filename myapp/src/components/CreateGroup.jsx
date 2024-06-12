@@ -19,7 +19,7 @@ const CreateGroup = () => {
       setallUsers([...data]);
       setgroupMembers([
         ...groupMembers,
-        data.find((u) => u._id === sessionStorage["_id"]),
+        data.find((u) => u._id === sessionStorage["userId"]),
       ]);
     };
     fetchData();
@@ -79,7 +79,7 @@ const CreateGroup = () => {
               <option value="/"></option>
               {allUsers?.map((user) => {
                 return (
-                  user._id !== sessionStorage["_id"] && (
+                  user._id !== sessionStorage["userId"] && (
                     <option key={user._id} value={user._id}>
                       {user.name}
                     </option>

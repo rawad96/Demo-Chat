@@ -11,7 +11,9 @@ const Last = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(`${usersURL}/${sessionStorage["_id"]}`);
+      const { data } = await axios.get(
+        `${usersURL}/${sessionStorage["userId"]}`
+      );
       const conversations = data.conversations.map((con) => {
         if (con.with) {
           return con;

@@ -17,7 +17,9 @@ const ChatAFriend = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(`${userURL}/${sessionStorage["_id"]}`);
+      const { data } = await axios.get(
+        `${userURL}/${sessionStorage["userId"]}`
+      );
       const conv = await data.conversations.find(
         (c) => c.with === sessionStorage["id"]
       );
@@ -38,7 +40,7 @@ const ChatAFriend = () => {
 
   useEffect(() => {
     if (readyState) {
-      sendJsonMessage({ type: "LOGIN", _id: sessionStorage["_id"] });
+      sendJsonMessage({ type: "LOGIN", _id: sessionStorage["userId"] });
     }
   }, [readyState]);
 
@@ -56,7 +58,7 @@ const ChatAFriend = () => {
         type: "friend",
         message: message,
         _id: sessionStorage["id"],
-        from: sessionStorage["_id"],
+        from: sessionStorage["userId"],
         isblocked: isBlocked ? "YES" : "NO",
       });
     }
@@ -74,24 +76,24 @@ const ChatAFriend = () => {
       type: "friend",
       message: msgForward,
       _id: e.target.value,
-      from: sessionStorage["_id"],
+      from: sessionStorage["userId"],
       isblocked: isBlocked ? "YES" : "NO",
     });
     setmsgForward("");
   };
 
   const block = async () => {
-    const { data } = await axios.get(`${userURL}/${sessionStorage["_id"]}`);
-    const resp = await axios.put(`${userURL}/${sessionStorage["_id"]}`, {
+    const { data } = await axios.get(`${userURL}/${sessionStorage["userId"]}`);
+    const resp = await axios.put(`${userURL}/${sessionStorage["userId"]}`, {
       blocked: [...data.blocked, sessionStorage["id"]],
     });
     setisBlocked(true);
   };
 
   const unBlock = async () => {
-    const { data } = await axios.get(`${userURL}/${sessionStorage["_id"]}`);
+    const { data } = await axios.get(`${userURL}/${sessionStorage["userId"]}`);
     data.blocked = data.blocked.filter((b) => b !== sessionStorage["id"]);
-    const resp = await axios.put(`${userURL}/${sessionStorage["_id"]}`, {
+    const resp = await axios.put(`${userURL}/${sessionStorage["userId"]}`, {
       blocked: [...data.blocked],
     });
     setisBlocked(false);
