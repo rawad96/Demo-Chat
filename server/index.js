@@ -10,6 +10,7 @@ const access = require("./routers/accessRouter");
 const usersBLL = require("./BLL/usersBLL");
 const groupsBLL = require("./BLL/groupsBll");
 const path = require("path");
+const mongoose = require("mongoose");
 
 const port = 3000;
 
@@ -17,7 +18,7 @@ const app = express();
 const server = http.createServer(app);
 const wsServer = new WebSocketServer({ server });
 
-connectUsersDB();
+// connectUsersDB();
 
 const clients = new Map();
 const groups = new Map();
@@ -128,4 +129,10 @@ app.use("/auth", authRouter);
 app.use("/groups", gropRouter);
 app.use("/access", access);
 
-server.listen(port);
+mongoose
+  .connect(
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@atlascluster.crzk4rq.mongodb.net/${process.env.DB_NAME}`
+  )
+  .then((result) => {
+    server.listen(port), console.log("DB connected");
+  });
