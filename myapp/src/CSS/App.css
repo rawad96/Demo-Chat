@@ -18,7 +18,8 @@
   border: unset;
 }
 
-.signuplogin-card input {
+.signuplogin-card input,
+.main-card input {
   padding: 10px;
   border-radius: 8px;
   border: 2px solid rgb(210, 207, 207);
@@ -27,4 +28,57 @@
 .signuplogin-card .link {
   text-decoration: none;
   cursor: pointer;
+}
+
+.main-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgb(0, 255, 213);
+}
+
+.main-card .main-subcard {
+  /* background-color: rgb(70, 192, 141); */
+  background-color: transparent;
+  border: unset;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+}
+
+.main-card .friends {
+  width: 35%;
+  border-right: 1px solid !important;
+
+  /* background-color: rgb(42, 165, 165); */
+}
+
+.main-card .messeges {
+  width: 75%;
+}
+
+.chat-main-card {
+  border: unset;
+  border-radius: unset;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.9);
+}
+
+.chat-main-card .card {
+  border: unset;
+  border-radius: unset;
+}
+
+@media(max-width:768px) {
+  .main-card .messeges {
+    display: none;
+  }
+
+  .main-card .friends {
+    width: 100%;
+    margin: auto;
+  }
 }

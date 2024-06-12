@@ -17,9 +17,9 @@ const Create = () => {
     e.preventDefault();
     try {
       const newUser = {
-        name: name,
-        username: username,
-        email: email,
+        name: name.toLowerCase(),
+        username: username.toLowerCase(),
+        email: email.toLowerCase(),
         password: password,
       };
       const sendData = await axios.post(usersurl, newUser);

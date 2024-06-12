@@ -53,7 +53,37 @@ const Main = () => {
 
   return (
     <>
-      <Container style={{ width: "50%" }}>
+      {sessionStorage["userId"] && (
+        <Card className="main-card">
+          <Container>
+            <Card className="p-4 main-subcard">
+              <Card.Text className="h2 text-center">Chat</Card.Text>
+              <Card className="text-center chat-main-card mt-4 px-1">
+                <Card className="p-1" style={{ borderBottom: "1px solid" }}>
+                  <Card.Text className="me-auto">
+                    <input
+                      type="text"
+                      placeholder="Search for people"
+                      className="py-1"
+                    />
+                  </Card.Text>
+                </Card>
+                <Card className="flex-row ">
+                  <Card className="friends p-3">
+                    <Card.Text className="h5">Chats</Card.Text>
+                    <Card></Card>
+                  </Card>
+                  <Card className="messeges">
+                    <Card.Text className="h5">Messeges</Card.Text>
+                  </Card>
+                </Card>
+              </Card>
+            </Card>
+          </Container>
+        </Card>
+      )}
+
+      {/* <Container style={{ width: "50%" }}>
         <Card>
           <Card.Title>Chat</Card.Title>
           <Card.Body>
@@ -70,7 +100,7 @@ const Main = () => {
           )}
           {chatAGroup && !chatAFriend && <CreateGroup />}
         </Card>
-      </Container>
+      </Container> */}
     </>
   );
 };

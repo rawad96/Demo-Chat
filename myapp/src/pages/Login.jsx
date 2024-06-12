@@ -21,7 +21,10 @@ const Login = () => {
   const Loginn = async (e) => {
     e.preventDefault();
     try {
-      const loginData = { username: username, password: password };
+      const loginData = {
+        username: username.toLowerCase(),
+        password: password,
+      };
       const resp = await axios.post(auth, loginData);
 
       const respone = await axios.get(accessurl, {
