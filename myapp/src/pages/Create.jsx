@@ -13,7 +13,7 @@ const Create = () => {
 
   const navigate = useNavigate();
 
-  const createuser = async () => {
+  const createuser = async (e) => {
     e.preventDefault();
     try {
       const newUser = {

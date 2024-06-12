@@ -18,7 +18,8 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const Loginn = async () => {
+  const Loginn = async (e) => {
+    e.preventDefault();
     try {
       const loginData = { username: username, password: password };
       const resp = await axios.post(auth, loginData);
@@ -47,7 +48,7 @@ const Login = () => {
         <Card className="signuplogin-subcard px-3 py-5">
           <Card.Text className="h3 text-center">Login</Card.Text>
           <Container>
-            <Form onKeyDown={handleKeyPress}>
+            <Form onKeyDown={handleKeyPress} onSubmit={Loginn}>
               <Row className="mt-4">
                 <input
                   type="text"
@@ -71,7 +72,7 @@ const Login = () => {
                 <Link className="link">Forgot password</Link>
               </Row>
               <Row className="mt-4 mb-4">
-                <Button onClick={Loginn}>Login</Button>
+                <Button type="submit">Login</Button>
               </Row>
               <Card.Text className="text-center">
                 Dont have an account?&nbsp;
