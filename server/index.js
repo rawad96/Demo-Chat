@@ -114,11 +114,7 @@ wsServer.on("connection", (ws) => {
   });
 });
 
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "https://demo-chat-x7hx.onrender.com"],
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "../myapp/dist")));
