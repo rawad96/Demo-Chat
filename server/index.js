@@ -122,6 +122,8 @@ app.use(
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "../myapp/dist")));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 //Routers
 app.use("/users", usersRouter);

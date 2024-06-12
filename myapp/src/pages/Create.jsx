@@ -69,7 +69,7 @@ const Create = () => {
                 />
               </Row>
               <Row className="mt-4 mb-2">
-                <Button>Create</Button>
+                <Button type="submit">Create</Button>
               </Row>
 
               <Card.Text className="text-center">
