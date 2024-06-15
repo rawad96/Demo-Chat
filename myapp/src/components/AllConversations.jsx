@@ -4,10 +4,11 @@ import { Card } from "react-bootstrap";
 import { ArrowRightShort } from "react-bootstrap-icons";
 import chatperson from "../Images/chat_person.png";
 
-const AllConversations = ({ chatWith, activechat }) => {
+const AllConversations = ({ chatWith }) => {
   const userURL = import.meta.env.VITE_API_BACKEND_URL + "users";
 
   const [allconversations, setallconversations] = useState([]);
+  const [activechat, setactivechat] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,22 +16,25 @@ const AllConversations = ({ chatWith, activechat }) => {
         `${userURL}/${sessionStorage["userId"]}`
       );
       setallconversations([...user.conversations]);
-      console.log(user.conversations);
     };
     fetchData();
   }, []);
+
   return (
     <>
       {allconversations?.map((con, index) => {
         return (
           <Card
             className={
-              activechat
+              activechat === con.with
                 ? "conversation px-2 py-3 flex-row bg-primary"
                 : "conversation px-2 py-3 flex-row"
             }
             key={index}
-            onClick={() => chatWith(con.with)}
+            onClick={() => {
+              chatWith(con.with);
+              setactivechat(con.with);
+            }}
           >
             <Card
               className="p-1 bg-transparent"

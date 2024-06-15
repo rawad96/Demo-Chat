@@ -1,21 +1,19 @@
-import { Button, Card, Container, Form, Row } from "react-bootstrap";
-import AllUsers from "../components/AllUsers";
-import useWebSocket, { ReadyState } from "react-use-websocket";
-import { useCallback, useEffect, useState } from "react";
+import { Card, Container } from "react-bootstrap";
+
+import useWebSocket from "react-use-websocket";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CreateGroup from "../components/CreateGroup";
 import SearchPeople from "../components/SearchPeople";
 import AllConversations from "../components/AllConversations";
 import ChatAFriend from "./ChatAFriend";
-import { ArrowLeft, Search } from "react-bootstrap-icons";
+import { ArrowLeft, BoxArrowRight, Search } from "react-bootstrap-icons";
 
 const Main = () => {
   const WS_URL = import.meta.env.VITE_WEBSOCKET_URL;
 
   const [messages, setMessages] = useState([]);
-  const [chatAFriend, setchatAFriend] = useState(false);
-  const [chatAGroup, setchatAGroup] = useState(false);
   const [ChatWith, setChatWith] = useState("");
   const [chooseConv, setchooseConv] = useState(true);
   const [showMessages, setshowMessages] = useState(false);
@@ -33,11 +31,6 @@ const Main = () => {
     }
   }, []);
 
-  const sendmessage = (e) => {
-    console.log(e);
-    sendJsonMessage(e);
-  };
-
   useEffect(() => {
     if (lastMessage !== null) {
       setMessages([...messages, lastMessage.data]);
@@ -45,27 +38,20 @@ const Main = () => {
     }
   }, [lastMessage]);
 
-  const last20 = () => {
-    navigate("/last20conversations");
-  };
-
-  const chatafriend = () => {
-    setchatAFriend(!chatAFriend);
-    setchatAGroup(false);
-  };
-
-  const chatagroup = () => {
-    setchatAGroup(!chatAGroup);
-    setchatAFriend(false);
-  };
-
   const handlechat = (e) => {
     setChatWith(e);
+    setsearch(false);
 
     if (window.innerWidth < 787) {
       setchooseConv(false);
       setshowMessages(true);
     }
+  };
+
+  const logout = () => {
+    sessionStorage["userId"] = "";
+    sessionStorage["name"] = "";
+    navigate("/");
   };
 
   return (
@@ -77,7 +63,7 @@ const Main = () => {
               <Card.Text className="h2 text-center">Chat</Card.Text>
               <Card className="text-center chat-main-card mt-4">
                 <Card
-                  className="p-1 px-1"
+                  className="p-1 px-1 flex-row"
                   style={{
                     borderLeft: "unset",
                     borderRight: "unset",
@@ -87,6 +73,14 @@ const Main = () => {
                   }}
                 >
                   <Search size={20} onClick={() => setsearch(true)} />
+                  <span
+                    className="ms-auto me-1"
+                    onClick={logout}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Logout
+                    <BoxArrowRight className="ms-1" size={20} />
+                  </span>
                 </Card>
                 <Card
                   className="flex-row mt-1 px-2"

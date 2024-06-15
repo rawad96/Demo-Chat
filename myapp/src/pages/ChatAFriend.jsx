@@ -20,16 +20,14 @@ const ChatAFriend = ({ id }) => {
 
   const [msgForward, setmsgForward] = useState("");
 
-  useEffect(() => {
+  useMemo(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
         `${userURL}/${sessionStorage["userId"]}`
       );
       setUser({ ...data });
       const conv = await data.conversations.find((c) => c.with === id);
-      conv?.conversation.map((msg) => {
-        allmessages.push(msg);
-      });
+      setallmessages([...conv?.conversation]);
       setname(conv?.name);
       const { data: users } = await axios.get(userURL);
       setallusers([...users]);
@@ -39,7 +37,7 @@ const ChatAFriend = ({ id }) => {
       });
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(WS_URL, {});
 
@@ -135,11 +133,14 @@ const ChatAFriend = ({ id }) => {
                 </span>
               </Card>
             ) : (
-              <Card className="flex-row p-1" style={{ border: "unset" }}>
+              <Card
+                className="flex-row p-1"
+                style={{ border: "unset" }}
+                key={index}
+              >
                 <img src={chatperson} alt="" style={{ width: "40px" }} />
                 <Card
                   className=" ms-1 me-auto pe-4 p-1 message-receive "
-                  key={index}
                   style={{ width: "max-content" }}
                 >
                   <span
