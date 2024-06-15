@@ -5,6 +5,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CreateGroup from "../components/CreateGroup";
+import SearchPeople from "../components/SearchPeople";
+import AllConversations from "../components/AllConversations";
+import ChatAFriend from "./ChatAFriend";
+import { ArrowLeft, Search } from "react-bootstrap-icons";
 
 const Main = () => {
   const WS_URL = import.meta.env.VITE_WEBSOCKET_URL;
@@ -12,6 +16,10 @@ const Main = () => {
   const [messages, setMessages] = useState([]);
   const [chatAFriend, setchatAFriend] = useState(false);
   const [chatAGroup, setchatAGroup] = useState(false);
+  const [ChatWith, setChatWith] = useState("");
+  const [chooseConv, setchooseConv] = useState(true);
+  const [showMessages, setshowMessages] = useState(false);
+  const [search, setsearch] = useState(false);
 
   const navigate = useNavigate();
 
@@ -51,6 +59,15 @@ const Main = () => {
     setchatAFriend(false);
   };
 
+  const handlechat = (e) => {
+    setChatWith(e);
+
+    if (window.innerWidth < 787) {
+      setchooseConv(false);
+      setshowMessages(true);
+    }
+  };
+
   return (
     <>
       {sessionStorage["userId"] && (
@@ -58,24 +75,40 @@ const Main = () => {
           <Container>
             <Card className="p-4 main-subcard">
               <Card.Text className="h2 text-center">Chat</Card.Text>
-              <Card className="text-center chat-main-card mt-4 px-1">
-                <Card className="p-1" style={{ borderBottom: "1px solid" }}>
-                  <Card.Text className="me-auto">
-                    <input
-                      type="text"
-                      placeholder="Search for people"
-                      className="py-1"
-                    />
-                  </Card.Text>
+              <Card className="text-center chat-main-card mt-4 p-1">
+                <Card
+                  className="p-1"
+                  style={{
+                    borderLeft: "unset",
+                    borderRight: "unset",
+                    borderTop: "unset",
+                    borderRadius: "unset",
+                    borderBottom: "1px solid",
+                  }}
+                >
+                  <Search size={15} onClick={() => setsearch(true)} />
                 </Card>
-                <Card className="flex-row ">
-                  <Card className="friends p-3">
-                    <Card.Text className="h5">Chats</Card.Text>
-                    <Card></Card>
-                  </Card>
-                  <Card className="messeges">
-                    <Card.Text className="h5">Messeges</Card.Text>
-                  </Card>
+                <Card className="flex-row mt-1" style={{ border: "unset" }}>
+                  {chooseConv && (
+                    <Card className="friends p-3" style={{ border: "unset" }}>
+                      <Card className="allconversations px-2 py-1">
+                        <AllConversations chatWith={handlechat} />
+                      </Card>
+                    </Card>
+                  )}
+                  {ChatWith && (
+                    <Card
+                      className={
+                        showMessages
+                          ? "messages messages-show p-3 "
+                          : "messages p-3 "
+                      }
+                      style={{ border: "unset" }}
+                      id="messages"
+                    >
+                      <ChatAFriend id={ChatWith} />
+                    </Card>
+                  )}
                 </Card>
               </Card>
             </Card>
@@ -83,6 +116,12 @@ const Main = () => {
         </Card>
       )}
 
+      {search && (
+        <Card className="search p-2">
+          <ArrowLeft size={20} onClick={() => setsearch(false)} />
+          <SearchPeople chatWith={handlechat} />
+        </Card>
+      )}
       {/* <Container style={{ width: "50%" }}>
         <Card>
           <Card.Title>Chat</Card.Title>

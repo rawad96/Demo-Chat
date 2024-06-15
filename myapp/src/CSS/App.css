@@ -52,13 +52,98 @@
 
 .main-card .friends {
   width: 35%;
-  border-right: 1px solid !important;
-
-  /* background-color: rgb(42, 165, 165); */
 }
 
-.main-card .messeges {
+.friends .allconversations {
+  background-color: rgb(1, 107, 107);
+  height: 600px;
+}
+
+.conversation {
+  text-align: left;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);
+  cursor: pointer;
+}
+
+.main-card .messages {
   width: 75%;
+}
+
+.messages .message-sent {
+  background-color: rgb(40, 197, 197);
+}
+
+.messages .message-receive {
+  background-color: aquamarine;
+}
+
+.no-arrow-dropdown {
+  border: unset !important;
+  background: transparent !important;
+}
+
+.no-arrow-dropdown::after {
+  display: none !important;
+}
+
+.send-message {
+  /* border-bottom: unset;
+  border-left: unset;
+  border-right: unset; */
+  border: unset;
+  border-radius: unset;
+}
+
+.send-message input {
+  width: 100%;
+  /* border: unset; */
+  border-radius: unset;
+}
+
+.send-message input:focus {
+  outline: unset;
+}
+
+.send-message button {
+  width: 55px;
+  border-Radius: unset;
+  border: unset;
+  background-color: rgb(51, 97, 143);
+}
+
+.send-message button:hover {
+  background-color: rgb(27, 63, 99);
+}
+
+.forward-card {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0px;
+  overflow: hidden;
+  transition: height 1s ease-in-out;
+  z-index: 2;
+}
+
+.forward-card-active {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 500px;
+  overflow: hidden;
+  transition: height 1s ease-in-out;
+  z-index: 2;
+}
+
+.forward-card-active .confirm {
+  width: 260px !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
 }
 
 .chat-main-card {
@@ -67,18 +152,97 @@
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.9);
 }
 
-.chat-main-card .card {
+.chat-main-card {
   border: unset;
   border-radius: unset;
 }
 
+.search {
+  width: 500px;
+  max-height: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow-y: auto;
+
+}
+
+.searched {
+  width: 31.8%;
+}
+
+.searched div {
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 2%;
+}
+
+.searched div:hover {
+  background-color: rgb(168, 239, 239);
+}
+
+.searched div span {
+  color: rgb(5, 78, 78);
+  font-size: large;
+}
+
+@media(max-width:1299px) {
+  .forward-card-active .conversation {
+    width: 70% !important;
+  }
+}
+
+@media(max-width:992px) {
+  .main-card .friends {
+    width: 60%;
+  }
+
+  .forward-card-active .conversation {
+    width: 90% !important;
+  }
+}
+
 @media(max-width:768px) {
-  .main-card .messeges {
+  .main-card .main-subcard {
+    width: 100%;
+  }
+
+  .main-card .messages {
     display: none;
+  }
+
+  .main-card .messages-show {
+    display: block !important;
+    width: 100% !important;
   }
 
   .main-card .friends {
     width: 100%;
     margin: auto;
+  }
+
+  .search {
+    width: 400px;
+  }
+
+  .searched {
+    width: 100%;
+  }
+
+  .forward-card-active .conversation {
+    width: 100% !important;
+  }
+}
+
+@media(max-width:528px) {
+  .search {
+    width: 300px;
+  }
+}
+
+@media(max-width:416px) {
+  .search {
+    width: 250px;
   }
 }

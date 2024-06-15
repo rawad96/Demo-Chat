@@ -1,15 +1,19 @@
-import { Button, Card, Container, Row } from "react-bootstrap";
+import { Button, Card, Dropdown } from "react-bootstrap";
 import useWebSocket from "react-use-websocket";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import { CheckAll, Send, ThreeDots } from "react-bootstrap-icons";
+import Forward from "../components/Forward";
 
-const ChatAFriend = () => {
+const ChatAFriend = ({ id }) => {
   const WS_URL = import.meta.env.VITE_WEBSOCKET_URL;
   const userURL = import.meta.env.VITE_API_BACKEND_URL + "users";
 
+  const [User, setUser] = useState({});
   const [message, setMessage] = useState("");
   const [allmessages, setallmessages] = useState([]);
   const [allusers, setallusers] = useState([]);
+  const [name, setname] = useState("");
 
   const [isBlocked, setisBlocked] = useState(false);
 
@@ -20,17 +24,17 @@ const ChatAFriend = () => {
       const { data } = await axios.get(
         `${userURL}/${sessionStorage["userId"]}`
       );
-      const conv = await data.conversations.find(
-        (c) => c.with === sessionStorage["id"]
-      );
+      setUser({ ...data });
+      const conv = await data.conversations.find((c) => c.with === id);
       conv?.conversation.map((msg) => {
         allmessages.push(msg);
       });
+      setname(conv?.name);
       const { data: users } = await axios.get(userURL);
       setallusers([...users]);
 
       data.blocked.map((b) => {
-        if (b === sessionStorage["id"]) setisBlocked(true);
+        if (b === id) setisBlocked(true);
       });
     };
     fetchData();
@@ -38,13 +42,13 @@ const ChatAFriend = () => {
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(WS_URL, {});
 
-  useEffect(() => {
+  useMemo(() => {
     if (readyState) {
       sendJsonMessage({ type: "LOGIN", _id: sessionStorage["userId"] });
     }
   }, [readyState]);
 
-  useEffect(() => {
+  useMemo(() => {
     if (lastMessage !== null) {
       console.log(lastMessage);
       setallmessages([...allmessages, { msg: lastMessage.data, typee: "r" }]);
@@ -57,7 +61,7 @@ const ChatAFriend = () => {
       sendJsonMessage({
         type: "friend",
         message: message,
-        _id: sessionStorage["id"],
+        _id: id,
         from: sessionStorage["userId"],
         isblocked: isBlocked ? "YES" : "NO",
       });
@@ -71,103 +75,105 @@ const ChatAFriend = () => {
     }
   };
 
-  const forward = (e) => {
-    sendJsonMessage({
-      type: "friend",
-      message: msgForward,
-      _id: e.target.value,
-      from: sessionStorage["userId"],
-      isblocked: isBlocked ? "YES" : "NO",
-    });
-    setmsgForward("");
-  };
-
   const block = async () => {
-    const { data } = await axios.get(`${userURL}/${sessionStorage["userId"]}`);
     const resp = await axios.put(`${userURL}/${sessionStorage["userId"]}`, {
-      blocked: [...data.blocked, sessionStorage["id"]],
+      blocked: [...User.blocked, id],
     });
     setisBlocked(true);
   };
 
   const unBlock = async () => {
-    const { data } = await axios.get(`${userURL}/${sessionStorage["userId"]}`);
-    data.blocked = data.blocked.filter((b) => b !== sessionStorage["id"]);
+    User.blocked = User.blocked.filter((b) => b !== id);
     const resp = await axios.put(`${userURL}/${sessionStorage["userId"]}`, {
-      blocked: [...data.blocked],
+      blocked: [...User.blocked],
     });
     setisBlocked(false);
   };
 
   return (
     <>
-      <Container>
-        <Card.Title className="mb-2">{sessionStorage["name"]}</Card.Title>
-        <input
-          type="text"
-          placeholder="Type your message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          style={{ width: "200px" }}
-          onKeyDown={handleKeyPress}
-        />
-        <Button
-          style={{ width: "20%", fontFamily: "cursive", marginLeft: "1%" }}
-          onClick={handleSendMessage}
-        >
-          send
-        </Button>
-        <Card className="mt-2">
-          <Card.Body style={{ overflowY: "auto", maxHeight: "400px" }}>
-            <br />
-            {allmessages?.map((m, index) => {
-              return m.typee === "s" ? (
-                <Row key={index} style={{ textAlign: "right" }}>
-                  <span value={m.msg} onClick={() => setmsgForward(m.msg)}>
-                    {m.msg}
-                  </span>
-                </Row>
-              ) : (
-                <Row key={index} style={{ textAlign: "left" }}>
-                  <span onClick={() => setmsgForward(m.msg)}>{m.msg}</span>
-                </Row>
-              );
-            })}
-          </Card.Body>
-        </Card>
-        <Button className="mt-3" onClick={isBlocked ? unBlock : block}>
-          {isBlocked ? "unBlock" : "Block"}
-        </Button>
+      <Card style={{ borderBottom: "unset" }}>
+        <Card className="bg-light px-3 pt-4" style={{ border: "unset" }}>
+          <Card.Text className="h3 m-0">{name?.toUpperCase()}</Card.Text>
 
-        <Card
-          className="mt-3"
-          style={{
-            width: "40%",
-            margin: "auto",
-            display: msgForward ? "block" : "none",
-          }}
-        >
-          <Card.Text>Forward to:</Card.Text>
-          <Card.Body>
-            <select onChange={forward}>
-              <option value="" hidden></option>
-              {allusers?.map((user, index) => {
-                return (
-                  <option key={index} value={user._id}>
-                    {user.name}
-                  </option>
-                );
-              })}
-            </select>
-            <Button
-              style={{ marginLeft: "2%", fontSize: "small" }}
-              onClick={() => setmsgForward("")}
-            >
-              cancel
-            </Button>
-          </Card.Body>
+          <Dropdown className="me-auto pe-1" style={{ width: "max-content" }}>
+            <Dropdown.Toggle className=" no-arrow-dropdown">
+              <ThreeDots size={20} color="black" />
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={isBlocked ? unBlock : block}>
+                {isBlocked ? "unBlock" : "Block"}
+              </Dropdown.Item>
+              <Dropdown.Item>Mute</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Card>
-      </Container>
+        <Card.Body style={{ overflowY: "auto", height: "480px" }}>
+          {allmessages?.map((m, index) => {
+            return m.typee === "s" ? (
+              <Card
+                className="mt-1 ms-auto ps-4 p-1 message-sent"
+                key={index}
+                style={{ width: "max-content" }}
+              >
+                <span
+                  style={{ cursor: "pointer" }}
+                  value={m.msg}
+                  onClick={() => setmsgForward(m.msg)}
+                >
+                  {m.msg}
+                  <CheckAll className="text-muted" />
+                </span>
+              </Card>
+            ) : (
+              <Card
+                className="mt-1 me-auto pe-4 p-1 message-receive "
+                key={index}
+                style={{ width: "max-content" }}
+              >
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setmsgForward(m.msg)}
+                >
+                  {m.msg}
+                </span>
+              </Card>
+            );
+          })}
+        </Card.Body>
+        {isBlocked && (
+          <span className="mb-2 text-muted">This contact is blocked</span>
+        )}
+        <Card className="flex-row send-message">
+          <input
+            type="text"
+            placeholder="Type your message..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
+            disabled={isBlocked ? true : false}
+          />
+          <Button
+            className="p-0"
+            onClick={handleSendMessage}
+            disabled={isBlocked ? true : false}
+          >
+            <Send size={20} />
+          </Button>
+        </Card>
+
+        <Forward
+          allconversations={User.conversations}
+          allUsers={allusers}
+          msgtoforward={msgForward}
+          block={isBlocked}
+          forwardedFrom={id}
+          setmsgforward={() => {
+            setmsgForward("");
+          }}
+        />
+      </Card>
     </>
   );
 };
