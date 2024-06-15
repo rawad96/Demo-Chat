@@ -75,9 +75,9 @@ const Main = () => {
           <Container>
             <Card className="p-4 main-subcard">
               <Card.Text className="h2 text-center">Chat</Card.Text>
-              <Card className="text-center chat-main-card mt-4 p-1">
+              <Card className="text-center chat-main-card mt-4">
                 <Card
-                  className="p-1"
+                  className="p-1 px-1"
                   style={{
                     borderLeft: "unset",
                     borderRight: "unset",
@@ -86,13 +86,22 @@ const Main = () => {
                     borderBottom: "1px solid",
                   }}
                 >
-                  <Search size={15} onClick={() => setsearch(true)} />
+                  <Search size={20} onClick={() => setsearch(true)} />
                 </Card>
-                <Card className="flex-row mt-1" style={{ border: "unset" }}>
+                <Card
+                  className="flex-row mt-1 px-2"
+                  style={{ border: "unset" }}
+                >
                   {chooseConv && (
-                    <Card className="friends p-3" style={{ border: "unset" }}>
-                      <Card className="allconversations px-2 py-1">
-                        <AllConversations chatWith={handlechat} />
+                    <Card className="friends py-3" style={{ border: "unset" }}>
+                      <Card
+                        className="allconversations p-2"
+                        style={{ borderRadius: "unset" }}
+                      >
+                        <AllConversations
+                          chatWith={handlechat}
+                          activechat={ChatWith}
+                        />
                       </Card>
                     </Card>
                   )}
@@ -101,7 +110,7 @@ const Main = () => {
                       className={
                         showMessages
                           ? "messages messages-show p-3 "
-                          : "messages p-3 "
+                          : "messages py-3 px-1"
                       }
                       style={{ border: "unset" }}
                       id="messages"

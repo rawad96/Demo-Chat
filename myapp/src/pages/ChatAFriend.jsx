@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { CheckAll, Send, ThreeDots } from "react-bootstrap-icons";
 import Forward from "../components/Forward";
+import chatperson from "../Images/chat_person.png";
 
 const ChatAFriend = ({ id }) => {
   const WS_URL = import.meta.env.VITE_WEBSOCKET_URL;
@@ -92,10 +93,17 @@ const ChatAFriend = ({ id }) => {
 
   return (
     <>
-      <Card style={{ borderBottom: "unset" }}>
-        <Card className="bg-light px-3 pt-4" style={{ border: "unset" }}>
-          <Card.Text className="h3 m-0">{name?.toUpperCase()}</Card.Text>
-
+      <Card style={{ borderBottom: "unset", borderRadius: "unset" }}>
+        <Card className="bg-light px-1 pt-1" style={{ border: "unset" }}>
+          <Card className="bg-transparent" style={{ border: "unset" }}>
+            <img
+              className="m-auto "
+              src={chatperson}
+              alt=""
+              style={{ width: "60px" }}
+            />
+            <Card.Text className="h3 m-auto">{name?.toUpperCase()}</Card.Text>
+          </Card>
           <Dropdown className="me-auto pe-1" style={{ width: "max-content" }}>
             <Dropdown.Toggle className=" no-arrow-dropdown">
               <ThreeDots size={20} color="black" />
@@ -113,7 +121,7 @@ const ChatAFriend = ({ id }) => {
           {allmessages?.map((m, index) => {
             return m.typee === "s" ? (
               <Card
-                className="mt-1 ms-auto ps-4 p-1 message-sent"
+                className="mt-1 ms-auto ps-4 p-1 bg-primary message-sent"
                 key={index}
                 style={{ width: "max-content" }}
               >
@@ -127,17 +135,20 @@ const ChatAFriend = ({ id }) => {
                 </span>
               </Card>
             ) : (
-              <Card
-                className="mt-1 me-auto pe-4 p-1 message-receive "
-                key={index}
-                style={{ width: "max-content" }}
-              >
-                <span
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setmsgForward(m.msg)}
+              <Card className="flex-row p-1" style={{ border: "unset" }}>
+                <img src={chatperson} alt="" style={{ width: "40px" }} />
+                <Card
+                  className=" ms-1 me-auto pe-4 p-1 message-receive "
+                  key={index}
+                  style={{ width: "max-content" }}
                 >
-                  {m.msg}
-                </span>
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setmsgForward(m.msg)}
+                  >
+                    {m.msg}
+                  </span>
+                </Card>
               </Card>
             );
           })}

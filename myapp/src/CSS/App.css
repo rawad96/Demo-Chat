@@ -36,7 +36,8 @@
   top: 0;
   bottom: 0;
   right: 0;
-  background-color: rgb(0, 255, 213);
+  /* background-image: linear-gradient(to right, rgb(70, 255, 230), rgb(255, 126, 255)); */
+  background-image: linear-gradient(90deg, #74EBD5 0%, #9FACE6 100%);
 }
 
 .main-card .main-subcard {
@@ -48,6 +49,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 85%;
+
 }
 
 .main-card .friends {
@@ -55,14 +57,22 @@
 }
 
 .friends .allconversations {
-  background-color: rgb(1, 107, 107);
-  height: 600px;
+  /* background-color: rgb(1, 107, 107); */
+  height: 660px;
+  overflow-y: auto;
 }
 
 .conversation {
   text-align: left;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);
+  border-radius: unset;
+  border-top: unset;
+  border-left: unset;
+  border-right: unset;
   cursor: pointer;
+}
+
+.conversation:hover {
+  background-color: rgb(210, 210, 210);
 }
 
 .main-card .messages {
@@ -70,11 +80,15 @@
 }
 
 .messages .message-sent {
-  background-color: rgb(40, 197, 197);
+  border: unset;
+  max-width: 400px;
+
 }
 
 .messages .message-receive {
-  background-color: aquamarine;
+  background-color: rgb(239, 244, 242);
+  border: unset;
+  max-width: 400px;
 }
 
 .no-arrow-dropdown {
@@ -98,6 +112,9 @@
   width: 100%;
   /* border: unset; */
   border-radius: unset;
+  border-bottom: unset;
+  border-left: unset;
+  border-right: unset;
 }
 
 .send-message input:focus {
@@ -108,11 +125,11 @@
   width: 55px;
   border-Radius: unset;
   border: unset;
-  background-color: rgb(51, 97, 143);
+  background-color: rgb(172, 172, 172);
 }
 
 .send-message button:hover {
-  background-color: rgb(27, 63, 99);
+  background-color: rgb(126, 128, 128);
 }
 
 .forward-card {
@@ -147,15 +164,12 @@
 }
 
 .chat-main-card {
+  /* height: 700px; */
   border: unset;
   border-radius: unset;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.9);
 }
 
-.chat-main-card {
-  border: unset;
-  border-radius: unset;
-}
 
 .search {
   width: 500px;
