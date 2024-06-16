@@ -16,7 +16,7 @@ const ChatAFriend = ({ id }) => {
   const [allusers, setallusers] = useState([]);
   const [name, setname] = useState("");
 
-  const [isBlocked, setisBlocked] = useState(false);
+  const [isBlocked, setisBlocked] = useState("");
 
   const [msgForward, setmsgForward] = useState("");
 
@@ -31,9 +31,9 @@ const ChatAFriend = ({ id }) => {
       setname(conv?.name);
       const { data: users } = await axios.get(userURL);
       setallusers([...users]);
-
+      console.log(data);
       data.blocked.map((b) => {
-        if (b === id) setisBlocked(true);
+        if (b === id) setisBlocked(b);
       });
     };
     fetchData();
@@ -78,7 +78,7 @@ const ChatAFriend = ({ id }) => {
     const resp = await axios.put(`${userURL}/${sessionStorage["userId"]}`, {
       blocked: [...User.blocked, id],
     });
-    setisBlocked(true);
+    setisBlocked(id);
   };
 
   const unBlock = async () => {
@@ -86,7 +86,7 @@ const ChatAFriend = ({ id }) => {
     const resp = await axios.put(`${userURL}/${sessionStorage["userId"]}`, {
       blocked: [...User.blocked],
     });
-    setisBlocked(false);
+    setisBlocked("");
   };
 
   return (
@@ -108,8 +108,8 @@ const ChatAFriend = ({ id }) => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item onClick={isBlocked ? unBlock : block}>
-                {isBlocked ? "unBlock" : "Block"}
+              <Dropdown.Item onClick={isBlocked === id ? unBlock : block}>
+                {isBlocked === id ? "unBlock" : "Block"}
               </Dropdown.Item>
               <Dropdown.Item>Mute</Dropdown.Item>
             </Dropdown.Menu>
@@ -154,7 +154,7 @@ const ChatAFriend = ({ id }) => {
             );
           })}
         </Card.Body>
-        {isBlocked && (
+        {isBlocked === id && (
           <span className="mb-2 text-muted">This contact is blocked</span>
         )}
         <Card className="flex-row send-message">
@@ -164,12 +164,12 @@ const ChatAFriend = ({ id }) => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyPress}
-            disabled={isBlocked ? true : false}
+            disabled={isBlocked === id ? true : false}
           />
           <Button
             className="p-0"
             onClick={handleSendMessage}
-            disabled={isBlocked ? true : false}
+            disabled={isBlocked === id ? true : false}
           >
             <Send size={20} />
           </Button>
