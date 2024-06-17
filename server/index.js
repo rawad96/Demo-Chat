@@ -51,7 +51,11 @@ wsServer.on("connection", (ws) => {
                 if (con.with === parsedMessage._id) {
                   con.conversation = [
                     ...con.conversation,
-                    { msg: parsedMessage.message, typee: "s" },
+                    {
+                      msg: parsedMessage.message,
+                      typee: "s",
+                      forwarded: parsedMessage.forwarded ? true : false,
+                    },
                   ];
                 }
               });
@@ -59,7 +63,11 @@ wsServer.on("connection", (ws) => {
                 if (con.with === parsedMessage.from) {
                   con.conversation = [
                     ...con.conversation,
-                    { msg: parsedMessage.message, typee: "r" },
+                    {
+                      msg: parsedMessage.message,
+                      typee: "r",
+                      forwarded: parsedMessage.forwarded ? true : false,
+                    },
                   ];
                 }
               });
@@ -71,6 +79,7 @@ wsServer.on("connection", (ws) => {
                 {
                   with: parsedMessage._id,
                   name: userB.name,
+                  forwarded: parsedMessage.forwarded ? true : false,
                   conversation: [{ msg: parsedMessage.message, typee: "s" }],
                 },
               ];
@@ -79,6 +88,7 @@ wsServer.on("connection", (ws) => {
                 {
                   with: parsedMessage.from,
                   name: userA.name,
+                  forwarded: parsedMessage.forwarded ? true : false,
                   conversation: [{ msg: parsedMessage.message, typee: "r" }],
                 },
               ];

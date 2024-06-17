@@ -49,9 +49,6 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/createacc" element={<Create />} />
         <Route path="/main" element={<Main />} />
-        <Route path="/chatafriend" element={<ChatAFriend />} />
-        <Route path="/last20conversations" element={<Last />} />
-        <Route path="/groupchat" element={<GroupChat />} />
       </Routes>
       {/* <div>
         <div>

@@ -14,7 +14,6 @@ const Login = () => {
 
   const auth = import.meta.env.VITE_API_BACKEND_URL + "auth";
   const accessurl = import.meta.env.VITE_API_BACKEND_URL + "access";
-  const connected = import.meta.env.VITE_API_BACKEND_URL + "connected";
 
   const navigate = useNavigate();
 

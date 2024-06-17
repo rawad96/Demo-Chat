@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRightShort } from "react-bootstrap-icons";
 import useWebSocket from "react-use-websocket";
 import axios from "axios";
 import { useState } from "react";
+import chatperson from "../Images/chat_person.png";
 
 const Forward = ({
   allconversations,
@@ -24,10 +25,11 @@ const Forward = ({
   const forward = () => {
     sendJsonMessage({
       type: "friend",
-      message: msgtoforward,
+      message: msgtoforward.msg,
       _id: forwardto_id,
       from: sessionStorage["userId"],
       isblocked: block ? "YES" : "NO",
+      forwarded: true,
     });
     setmsgforward("");
   };
@@ -54,7 +56,7 @@ const Forward = ({
             return (
               con.with !== forwardedFrom && (
                 <Card
-                  className="conversation px-2 my-2 py-2 w-50"
+                  className="conv px-2 my-2 py-2 w-50 flex-row"
                   key={index}
                   onClick={() => {
                     setforwardto(con.name);
@@ -62,18 +64,24 @@ const Forward = ({
                     setforwardto_id(con.with);
                   }}
                 >
-                  <Card.Text className="h6">{con.name}</Card.Text>
-                  <Card.Text className="text-muted ">
-                    <ArrowRightShort size={20} />
-                    {con.conversation[con.conversation.length - 1].msg}
-                  </Card.Text>
+                  <div>
+                    <img src={chatperson} alt="" style={{ width: "60px" }} />
+                  </div>
+                  <div className="ms-2">
+                    <Card.Text className="h6 text-uppercase">
+                      {con.name}
+                    </Card.Text>
+                    <Card.Text className="text-muted ">
+                      {con.conversation[con.conversation.length - 1].msg}
+                    </Card.Text>
+                  </div>
                 </Card>
               )
             );
           })}
         </Card>
         {confirmSending && (
-          <Card className="py-1 confirm">
+          <Card className="p-4 confirm text-center">
             <Card.Text>Forward to {forwardto.toUpperCase()}</Card.Text>
             <div className="py-2">
               <Button onClick={forward}>Forward</Button>
