@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Card, Row } from "react-bootstrap";
 import { Send } from "react-bootstrap-icons";
 
-const SearchPeople = ({ chatWith }) => {
+const SearchPeople = ({ chatWith, active }) => {
   const userURL = import.meta.env.VITE_API_BACKEND_URL + "users";
 
   const [forSearch, setforSearch] = useState("");

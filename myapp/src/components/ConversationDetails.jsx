@@ -17,7 +17,7 @@ const ConversationDetails = ({ con, activeconv, getconid }) => {
         <div className="p-1">
           <h6>{con.name}</h6>
           <span className="text-muted">
-            {con.conversation[con.conversation.length - 1].msg}
+            {con?.conversation[con.conversation?.length - 1]?.msg}
           </span>
         </div>
       </Card>

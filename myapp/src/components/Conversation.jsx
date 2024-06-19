@@ -7,9 +7,10 @@ import axios from "axios";
 import useWebSocket from "react-use-websocket";
 import Forward from "../components/Forward";
 
-const Conversation = ({ id, responsive }) => {
+const Conversation = ({ id, responsive, refreshconversations }) => {
   const WS_URL = import.meta.env.VITE_WEBSOCKET_URL;
   const userURL = import.meta.env.VITE_API_BACKEND_URL + "users";
+  const groupsurl = import.meta.env.VITE_API_BACKEND_URL + "groups";
 
   const [User, setUser] = useState({});
   const [message, setMessage] = useState("");
@@ -33,6 +34,11 @@ const Conversation = ({ id, responsive }) => {
       if (conv) {
         setname(conv.name);
         setallmessages([...conv.conversation]);
+      } else {
+        const { data: newuser } = await axios.get(`${userURL}/${id}`);
+
+        setname(newuser.name);
+        setallmessages([]);
       }
       const { data: users } = await axios.get(userURL);
       setallusers([...users]);
@@ -95,6 +101,12 @@ const Conversation = ({ id, responsive }) => {
 
   const setforwardmsg = (e) => {
     setmsgForward(e);
+  };
+
+  const refresh = () => {
+    if (allmessages.length === 1) {
+      refreshconversations(true);
+    }
   };
 
   return (

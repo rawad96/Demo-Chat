@@ -4,21 +4,21 @@ import useWebSocket from "react-use-websocket";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import CreateGroup from "../components/CreateGroup";
-import SearchPeople from "../components/SearchPeople";
 import AllConversations from "../components/AllConversations";
-import ChatAFriend from "./ChatAFriend";
 import { BoxArrowRight, Gear, ThreeDots } from "react-bootstrap-icons";
 import Conversation from "../components/Conversation";
+import NewConversation from "../components/NewConversation";
 
 const Main = () => {
   const WS_URL = import.meta.env.VITE_WEBSOCKET_URL;
 
   const [messages, setMessages] = useState([]);
-  const [conversation, setconversation] = useState({});
   const [chooseConv, setchooseConv] = useState(false);
   const [showMessages, setshowMessages] = useState(false);
-  const [search, setsearch] = useState(false);
+  const [newsearch, setnewsearch] = useState(false);
+  const [conversationwith_id, setconversationwith_id] = useState("");
+  const [refresh, setrefresh] = useState(false);
+  const [closeCreateGroupComp, setcloseCreateGroupComp] = useState(false);
 
   const navigate = useNavigate();
 
@@ -40,11 +40,20 @@ const Main = () => {
   }, [lastMessage]);
 
   const setconversationbyId = (e) => {
-    setconversation({ ...e });
+    if (e.with) {
+      setconversationwith_id(e.with);
+    } else {
+      setconversationwith_id(e._id);
+    }
+    setnewsearch(false);
     if (window.innerWidth < 767) {
       setchooseConv(true);
       setshowMessages(true);
     }
+  };
+
+  const setRefresh = (e) => {
+    setrefresh(true);
   };
 
   const logout = () => {
@@ -66,6 +75,10 @@ const Main = () => {
                 <ThreeDots size={20} color="black" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
+                <Dropdown.Item onClick={() => setnewsearch(true)}>
+                  New conversation
+                </Dropdown.Item>
+
                 <Dropdown.Item>
                   Settings
                   <Gear className="ms-1" size={18} />
@@ -84,9 +97,20 @@ const Main = () => {
             <AllConversations
               getconversation={setconversationbyId}
               responsive={chooseConv}
+              refreshconversations={refresh}
             />
-            <Conversation id={conversation.with} responsive={showMessages} />
+            <Conversation
+              id={conversationwith_id}
+              responsive={showMessages}
+              refreshconversations={setRefresh}
+            />
           </Card>
+          {newsearch && (
+            <NewConversation
+              getuser={setconversationbyId}
+              closecomp={() => setnewsearch(false)}
+            />
+          )}
         </Card>
       )}
     </>

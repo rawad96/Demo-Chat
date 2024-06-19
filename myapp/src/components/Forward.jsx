@@ -2,7 +2,7 @@ import { Button, Card } from "react-bootstrap";
 import SearchPeople from "./SearchPeople";
 import { ArrowLeft, ArrowRightShort } from "react-bootstrap-icons";
 import useWebSocket from "react-use-websocket";
-import axios from "axios";
+import axios, { all } from "axios";
 import { useState } from "react";
 import chatperson from "../Images/chat_person.png";
 
@@ -15,13 +15,11 @@ const Forward = ({
   forwardedFrom,
 }) => {
   const WS_URL = import.meta.env.VITE_WEBSOCKET_URL;
-
   const [confirmSending, setconfirmSending] = useState(false);
   const [forwardto, setforwardto] = useState("");
   const [forwardto_id, setforwardto_id] = useState("");
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(WS_URL, {});
-
   const forward = () => {
     sendJsonMessage({
       type: "friend",
@@ -72,7 +70,7 @@ const Forward = ({
                       {con.name}
                     </Card.Text>
                     <Card.Text className="text-muted ">
-                      {con.conversation[con.conversation.length - 1].msg}
+                      {con.conversation[con.conversation.length - 1]?.msg}
                     </Card.Text>
                   </div>
                 </Card>

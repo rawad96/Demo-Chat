@@ -5,10 +5,10 @@ const { WebSocketServer } = require("ws");
 const connectUsersDB = require("./config/USERSDB");
 const usersRouter = require("./routers/usersRouter");
 const authRouter = require("./routers/authRouter");
-const gropRouter = require("./routers/groupsRouter");
+
 const access = require("./routers/accessRouter");
 const usersBLL = require("./BLL/usersBLL");
-const groupsBLL = require("./BLL/groupsBll");
+
 const path = require("path");
 const mongoose = require("mongoose");
 
@@ -99,23 +99,6 @@ wsServer.on("connection", (ws) => {
         };
         setmessage();
       }
-    } else if (parsedMessage.type === "group") {
-      parsedMessage.to.map((user) => {
-        const rec = clients.get(user._id);
-        if (rec) {
-          rec.send(parsedMessage.message);
-        }
-      });
-      const setmessage = async () => {
-        const group = await groupsBLL.getGroupById(parsedMessage.groupId);
-        const resp = await groupsBLL.updateGroup(group._id, {
-          conversation: [
-            ...group.conversation,
-            { msg: parsedMessage.message, from: parsedMessage.from },
-          ],
-        });
-      };
-      setmessage();
     }
   });
 
@@ -134,7 +117,6 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 //Routers
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
-app.use("/groups", gropRouter);
 app.use("/access", access);
 
 mongoose

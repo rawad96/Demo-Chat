@@ -26,7 +26,7 @@ router.get("/:id", async (req, res) => {
       groups: user.groups,
     });
   } catch (error) {
-    res.status(500).send(error);
+    res.send("none");
   }
 });
 

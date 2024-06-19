@@ -132,6 +132,37 @@
   display: none !important;
 }
 
+.newconversation {
+  width: 50%;
+  height: 60%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.new-conversation-details-card:hover {
+  background-color: rgb(214, 214, 214);
+  cursor: pointer;
+
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, #faf6f6, #000000, #000000, #faf6f6);
+  opacity: 100%;
+}
+
+.newgroup {
+  width: 50%;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 @media(max-width:1299px) {
   .allconversations {
     width: 40%;
@@ -152,17 +183,3 @@
     display: none;
   }
 }
-
-
-
-/* @media(max-width:518px) {
-  .main-card {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    transform: unset;
-
-  }
-} */

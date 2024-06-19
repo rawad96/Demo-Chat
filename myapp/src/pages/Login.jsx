@@ -10,7 +10,6 @@ const Login = () => {
 
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
-  const [failed, setfailed] = useState(false);
 
   const auth = import.meta.env.VITE_API_BACKEND_URL + "auth";
   const accessurl = import.meta.env.VITE_API_BACKEND_URL + "access";
@@ -29,7 +28,6 @@ const Login = () => {
       const respone = await axios.get(accessurl, {
         headers: { xaccesstoken: resp.data.accessToken },
       });
-      console.log(respone);
 
       sessionStorage["userId"] = respone.data.id;
       navigate("/main");

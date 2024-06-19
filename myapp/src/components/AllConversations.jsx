@@ -1,14 +1,19 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
-import { ArrowRightShort } from "react-bootstrap-icons";
+import { useEffect, useMemo, useState } from "react";
+
 import ConversationDetails from "./ConversationDetails";
 
-const AllConversations = ({ getconversation, responsive }) => {
+const AllConversations = ({
+  getconversation,
+  responsive,
+  refreshconversation,
+}) => {
   const userURL = import.meta.env.VITE_API_BACKEND_URL + "users";
 
   const [allconversations, setallconversations] = useState([]);
   const [activechat, setactivechat] = useState("");
+  const [allconv, setallconv] = useState(true);
+  const [forSearch, setforSearch] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,7 +23,17 @@ const AllConversations = ({ getconversation, responsive }) => {
       setallconversations([...user.conversations]);
     };
     fetchData();
-  }, []);
+  }, [refreshconversation]);
+
+  const filterdConversations = useMemo(
+    () =>
+      allconversations.filter((conv) => {
+        return conv.name
+          .toLocaleLowerCase()
+          .includes(forSearch.toLocaleLowerCase());
+      }),
+    [forSearch]
+  );
 
   const sendid = (e) => {
     getconversation(e);
@@ -34,16 +49,38 @@ const AllConversations = ({ getconversation, responsive }) => {
             : "allconversations mt-4"
         }
       >
-        {allconversations?.map((con, index) => {
-          return (
-            <ConversationDetails
-              con={con}
-              getconid={sendid}
-              key={index}
-              activeconv={activechat}
-            />
-          );
-        })}
+        <input
+          type="text"
+          placeholder="Search..."
+          className="py-1 w-100"
+          onChange={(e) => setforSearch(e.target.value)}
+          style={{
+            borderRadius: "unset",
+            border: "1px solid rgb(210, 207, 207)",
+          }}
+        />
+        {!forSearch &&
+          allconversations?.map((con, index) => {
+            return (
+              <ConversationDetails
+                con={con}
+                getconid={sendid}
+                key={index}
+                activeconv={activechat}
+              />
+            );
+          })}
+        {forSearch &&
+          filterdConversations?.map((con, index) => {
+            return (
+              <ConversationDetails
+                con={con}
+                getconid={sendid}
+                key={index}
+                activeconv={activechat}
+              />
+            );
+          })}
       </div>
     </>
   );
